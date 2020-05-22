@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>bugfix</title>
+  
+  <subtitle>逃不掉与bug的恩怨</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://bugfixs.com/"/>
+  <updated>2020-05-22T15:58:54.573Z</updated>
+  <id>https://bugfixs.com/</id>
+  
+  <author>
+    <name>Super-Jonny</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>websocket-go</title>
+    <link href="https://bugfixs.com/2020/05/22/websocket/"/>
+    <id>https://bugfixs.com/2020/05/22/websocket/</id>
+    <published>2020-05-22T14:41:51.000Z</published>
+    <updated>2020-05-22T15:58:54.573Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;多人本地提交push-测试&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#多人本地提交push-测试&quot;&gt;&lt;/a&gt; 多人本地提交push 测试&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;查看图片 &lt;img src=&quot;http://cdn.bqius.c
+      
+    
+    </summary>
+    
+    
+      <category term="协议" scheme="https://bugfixs.com/categories/%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+      <category term="websocket" scheme="https://bugfixs.com/tags/websocket/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cypress安装与启动</title>
+    <link href="https://bugfixs.com/2020/05/21/Cypress/"/>
+    <id>https://bugfixs.com/2020/05/21/Cypress/</id>
+    <published>2020-05-21T13:05:48.000Z</published>
+    <updated>2020-05-22T15:35:19.930Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;安装&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#安装&quot;&gt;&lt;/a&gt; 安装&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;创建一个项目目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td 
+      
+    
+    </summary>
+    
+    
+      <category term="分层自动化测试" scheme="https://bugfixs.com/categories/%E5%88%86%E5%B1%82%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
+    
+    
+      <category term="Cypress" scheme="https://bugfixs.com/tags/Cypress/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker-locsut</title>
+    <link href="https://bugfixs.com/2020/05/21/%E5%AE%B9%E5%99%A8-1/"/>
+    <id>https://bugfixs.com/2020/05/21/%E5%AE%B9%E5%99%A8-1/</id>
+    <published>2020-05-21T12:31:32.000Z</published>
+    <updated>2020-05-22T15:35:19.934Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;为某项目添加dockerfile&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#为某项目添加dockerfile&quot;&gt;&lt;/a&gt; 为某项目添加Dockerfile&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Dockerfile：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://bugfixs.com/categories/Docker/"/>
+    
+    
+      <category term="Dockerfile" scheme="https://bugfixs.com/tags/Dockerfile/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker-XXX</title>
+    <link href="https://bugfixs.com/2020/05/21/%E5%AE%B9%E5%99%A8/"/>
+    <id>https://bugfixs.com/2020/05/21/%E5%AE%B9%E5%99%A8/</id>
+    <published>2020-05-21T12:20:45.000Z</published>
+    <updated>2020-05-22T15:35:19.934Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://bugfixs.com/categories/Docker/"/>
+    
+    
+      <category term="Image" scheme="https://bugfixs.com/tags/Image/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>test</title>
+    <link href="https://bugfixs.com/2020/05/20/test-2/"/>
+    <id>https://bugfixs.com/2020/05/20/test-2/</id>
+    <published>2020-05-20T12:28:20.000Z</published>
+    <updated>2020-05-22T15:35:19.933Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="测试开发" scheme="https://bugfixs.com/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="理论" scheme="https://bugfixs.com/tags/%E7%90%86%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>test</title>
+    <link href="https://bugfixs.com/2020/05/20/test-1/"/>
+    <id>https://bugfixs.com/2020/05/20/test-1/</id>
+    <published>2020-05-20T12:28:17.000Z</published>
+    <updated>2020-05-22T15:35:19.933Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="测试开发" scheme="https://bugfixs.com/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="理论" scheme="https://bugfixs.com/tags/%E7%90%86%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>test</title>
+    <link href="https://bugfixs.com/2020/05/20/test/"/>
+    <id>https://bugfixs.com/2020/05/20/test/</id>
+    <published>2020-05-20T12:28:12.000Z</published>
+    <updated>2020-05-22T15:35:19.934Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="测试开发" scheme="https://bugfixs.com/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="理论" scheme="https://bugfixs.com/tags/%E7%90%86%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>go-f3</title>
+    <link href="https://bugfixs.com/2020/05/20/go-f3/"/>
+    <id>https://bugfixs.com/2020/05/20/go-f3/</id>
+    <published>2020-05-20T12:09:20.000Z</published>
+    <updated>2020-05-22T15:35:19.932Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://bugfixs.com/categories/Go/"/>
+    
+    
+      <category term="并发" scheme="https://bugfixs.com/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>go-f2</title>
+    <link href="https://bugfixs.com/2020/05/20/go-f2/"/>
+    <id>https://bugfixs.com/2020/05/20/go-f2/</id>
+    <published>2020-05-20T12:09:17.000Z</published>
+    <updated>2020-05-22T15:35:19.932Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://bugfixs.com/categories/Go/"/>
+    
+    
+      <category term="接口" scheme="https://bugfixs.com/tags/%E6%8E%A5%E5%8F%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go-f1</title>
+    <link href="https://bugfixs.com/2020/05/20/go-f1/"/>
+    <id>https://bugfixs.com/2020/05/20/go-f1/</id>
+    <published>2020-05-20T12:09:14.000Z</published>
+    <updated>2020-05-22T15:35:19.932Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://bugfixs.com/categories/Go/"/>
+    
+    
+      <category term="组装嵌套" scheme="https://bugfixs.com/tags/%E7%BB%84%E8%A3%85%E5%B5%8C%E5%A5%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据结构-双指针</title>
+    <link href="https://bugfixs.com/2020/05/16/shujujiegou/"/>
+    <id>https://bugfixs.com/2020/05/16/shujujiegou/</id>
+    <published>2020-05-16T12:20:58.000Z</published>
+    <updated>2020-05-22T15:35:19.933Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;来看下 《删除排序数组中的重复项》 这道题目, 然后我会分享解题思路和源码, 最后是我们的QA环节。&lt;/p&gt;
+&lt;h4 id=&quot;1-题目-给定一个排序数组你需要在-原地-删除重复出现的元素使得每个元素只出现一次返回移除后数组的新长度&quot;&gt;&lt;a class=&quot;markdownIt
+      
+    
+    </summary>
+    
+    
+      <category term="数据结构算法" scheme="https://bugfixs.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="双指针" scheme="https://bugfixs.com/tags/%E5%8F%8C%E6%8C%87%E9%92%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hexo绑定域名</title>
+    <link href="https://bugfixs.com/2019/05/20/hexo-yuming-md/"/>
+    <id>https://bugfixs.com/2019/05/20/hexo-yuming-md/</id>
+    <published>2019-05-20T11:39:29.000Z</published>
+    <updated>2020-05-22T15:35:19.932Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;绑定域名&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#绑定域名&quot;&gt;&lt;/a&gt; 绑定域名&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;阿里云登录后去注册域名，购买。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;命令行终端 执行 ping 你的部署在
+      
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://bugfixs.com/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="hexo" scheme="https://bugfixs.com/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>压力客户端go版本框架</title>
+    <link href="https://bugfixs.com/2019/05/18/locust-go-slave/"/>
+    <id>https://bugfixs.com/2019/05/18/locust-go-slave/</id>
+    <published>2019-05-18T06:09:22.000Z</published>
+    <updated>2020-05-22T15:35:19.932Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;介绍由go实现的客户端的由来&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#介绍由go实现的客户端的由来&quot;&gt;&lt;/a&gt; 介绍由go实现的客户端的由来&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;locust 虽然采用协程的方式节省资源并提高并发能力，但语
+      
+    
+    </summary>
+    
+    
+      <category term="性能测试" scheme="https://bugfixs.com/categories/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
+    
+    
+      <category term="locust-go-slave" scheme="https://bugfixs.com/tags/locust-go-slave/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>node-f3.go</title>
+    <link href="https://bugfixs.com/2018/05/20/node-f3-go/"/>
+    <id>https://bugfixs.com/2018/05/20/node-f3-go/</id>
+    <published>2018-05-20T12:17:30.000Z</published>
+    <updated>2020-05-22T15:35:19.933Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Node" scheme="https://bugfixs.com/categories/Node/"/>
+    
+    
+      <category term="缓冲区" scheme="https://bugfixs.com/tags/%E7%BC%93%E5%86%B2%E5%8C%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>node-f2.go</title>
+    <link href="https://bugfixs.com/2018/05/20/node-f2-go/"/>
+    <id>https://bugfixs.com/2018/05/20/node-f2-go/</id>
+    <published>2018-05-20T12:17:02.000Z</published>
+    <updated>2020-05-22T15:35:19.933Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Node" scheme="https://bugfixs.com/categories/Node/"/>
+    
+    
+      <category term="异步非阻塞" scheme="https://bugfixs.com/tags/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>node-f1.go</title>
+    <link href="https://bugfixs.com/2018/05/20/node-f1-go/"/>
+    <id>https://bugfixs.com/2018/05/20/node-f1-go/</id>
+    <published>2018-05-20T12:16:46.000Z</published>
+    <updated>2020-05-22T15:35:19.933Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Node" scheme="https://bugfixs.com/categories/Node/"/>
+    
+    
+      <category term="多进程" scheme="https://bugfixs.com/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hexo一套操作</title>
+    <link href="https://bugfixs.com/2017/11/20/hexo-pure-opt-md/"/>
+    <id>https://bugfixs.com/2017/11/20/hexo-pure-opt-md/</id>
+    <published>2017-11-20T07:32:27.000Z</published>
+    <updated>2020-05-22T15:35:19.932Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;环境准备&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#环境准备&quot;&gt;&lt;/a&gt; 环境准备&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Node环境安装，建议nvm 版本切换起来方便&lt;/li&gt;
+&lt;li&gt;git安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h4
+      
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="https://bugfixs.com/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="hexo" scheme="https://bugfixs.com/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JavaScript-f1</title>
+    <link href="https://bugfixs.com/2017/05/20/JavaScript-f1/"/>
+    <id>https://bugfixs.com/2017/05/20/JavaScript-f1/</id>
+    <published>2017-05-20T12:09:47.000Z</published>
+    <updated>2020-05-22T15:35:19.931Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="https://bugfixs.com/categories/JavaScript/"/>
+    
+    
+      <category term="原型" scheme="https://bugfixs.com/tags/%E5%8E%9F%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JavaScript-f2</title>
+    <link href="https://bugfixs.com/2017/05/20/JavaScript-f2/"/>
+    <id>https://bugfixs.com/2017/05/20/JavaScript-f2/</id>
+    <published>2017-05-20T12:09:42.000Z</published>
+    <updated>2020-05-22T15:35:19.931Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="https://bugfixs.com/categories/JavaScript/"/>
+    
+    
+      <category term="原型链" scheme="https://bugfixs.com/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JavaScript-f3</title>
+    <link href="https://bugfixs.com/2017/05/20/JavaScript-f3/"/>
+    <id>https://bugfixs.com/2017/05/20/JavaScript-f3/</id>
+    <published>2017-05-20T12:09:40.000Z</published>
+    <updated>2020-05-22T15:35:19.931Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="https://bugfixs.com/categories/JavaScript/"/>
+    
+    
+      <category term="事件循环" scheme="https://bugfixs.com/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/"/>
+    
+  </entry>
+  
+</feed>

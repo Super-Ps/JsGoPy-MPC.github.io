@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>压力客户端go版本框架 | bugfix</title>
+  <meta name="description" content="介绍由go实现的客户端的由来  locust 虽然采用协程的方式节省资源并提高并发能力，但语言本身的缺陷使得在并发能力上仍然不是很出色，比如他采用的底层http请求库，或者是优化之后的请求库，都不是很理想，为什么这么说，是因为有go 的存在，所以表现出了差距。你会在locust官方看到一个提升并发能力的选项叫做boomer。 于是基于boomer 我又做了一些组装 改进，更加适用于分布式，更加出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="压力客户端go版本框架">
+<meta property="og:url" content="https://bugfixs.com/2019/05/18/locust-go-slave/index.html">
+<meta property="og:site_name" content="bugfix">
+<meta property="og:description" content="介绍由go实现的客户端的由来  locust 虽然采用协程的方式节省资源并提高并发能力，但语言本身的缺陷使得在并发能力上仍然不是很出色，比如他采用的底层http请求库，或者是优化之后的请求库，都不是很理想，为什么这么说，是因为有go 的存在，所以表现出了差距。你会在locust官方看到一个提升并发能力的选项叫做boomer。 于是基于boomer 我又做了一些组装 改进，更加适用于分布式，更加出">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://cdn.bqius.com/images/jiegoutu.png">
+<meta property="og:image" content="http://cdn.bqius.com/images/p2.png">
+<meta property="og:image" content="http://cdn.bqius.com/images/p1.png">
+<meta property="article:published_time" content="2019-05-18T06:09:22.000Z">
+<meta property="article:modified_time" content="2020-05-22T15:35:19.932Z">
+<meta property="article:author" content="Super-Jonny">
+<meta property="article:tag" content="locust-go-slave">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cdn.bqius.com/images/jiegoutu.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://bugfixs.com/2019/05/18/locust-go-slave/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="bugfix" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/Super-Ps" target="_blank">
+          <img class="img-circle img-rotate" src="/images/dijia.png" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">奥利给</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Js &amp; Go &amp; Py &amp; Tester</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Super-Ps" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好记性不如烂笔头</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Go/">Go</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node/">Node</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B1%82%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">分层自动化测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%8F%E8%AE%AE/">协议</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/">数据结构算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/">测试开发</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cypress/" rel="tag">Cypress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dockerfile/" rel="tag">Dockerfile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Image/" rel="tag">Image</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/locust-go-slave/" rel="tag">locust-go-slave</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/" rel="tag">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E5%9E%8B/" rel="tag">原型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/" rel="tag">原型链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag">多进程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E/" rel="tag">异步非阻塞</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E5%AF%BC%E5%BC%8F/" rel="tag">推导式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E8%A3%85%E5%B5%8C%E5%A5%97/" rel="tag">组装嵌套</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA/" rel="tag">缓冲区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Cypress/" style="font-size: 13px;">Cypress</a> <a href="/tags/Dockerfile/" style="font-size: 13px;">Dockerfile</a> <a href="/tags/Image/" style="font-size: 13px;">Image</a> <a href="/tags/hexo/" style="font-size: 13.5px;">hexo</a> <a href="/tags/locust-go-slave/" style="font-size: 13px;">locust-go-slave</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/" style="font-size: 13px;">事件循环</a> <a href="/tags/%E5%8E%9F%E5%9E%8B/" style="font-size: 13px;">原型</a> <a href="/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/" style="font-size: 13px;">原型链</a> <a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" style="font-size: 13px;">双指针</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 13px;">多进程</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 13px;">并发</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 13px;">异步非阻塞</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 13px;">接口</a> <a href="/tags/%E6%8E%A8%E5%AF%BC%E5%BC%8F/" style="font-size: 13px;">推导式</a> <a href="/tags/%E7%90%86%E8%AE%BA/" style="font-size: 14px;">理论</a> <a href="/tags/%E7%BB%84%E8%A3%85%E5%B5%8C%E5%A5%97/" style="font-size: 13px;">组装嵌套</a> <a href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA/" style="font-size: 13px;">缓冲区</a> <a href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" style="font-size: 13px;">装饰器</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 13px;">面向对象</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled ">
+        
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/22/websocket/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%8D%8F%E8%AE%AE/">协议</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/22/websocket/" class="title">websocket-go</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-22T14:41:51.000Z" itemprop="datePublished">2020-05-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/21/Cypress/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%88%86%E5%B1%82%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">分层自动化测试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/Cypress/" class="title">Cypress安装与启动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T13:05:48.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/21/%E5%AE%B9%E5%99%A8-1/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/%E5%AE%B9%E5%99%A8-1/" class="title">Docker-locsut</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T12:31:32.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/21/%E5%AE%B9%E5%99%A8/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/%E5%AE%B9%E5%99%A8/" class="title">Docker-XXX</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T12:20:45.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/20/test-2/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/">测试开发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/test-2/" class="title">test</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T12:28:20.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍由go实现的客户端的由来"><span class="toc-number">1.</span> <span class="toc-text"> 介绍由go实现的客户端的由来</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#go实现的客户端目录"><span class="toc-number">2.</span> <span class="toc-text"> go实现的客户端目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体示例"><span class="toc-number">3.</span> <span class="toc-text"> 具体示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text"> 总结</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-locust-go-slave" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      压力客户端go版本框架
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/05/18/locust-go-slave/" class="article-date">
+	  <time datetime="2019-05-18T06:09:22.000Z" itemprop="datePublished">2019-05-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/locust-go-slave/" rel="tag">locust-go-slave</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/05/18/locust-go-slave/#comments" class="article-comment-link">Comments</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.9k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 7(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="介绍由go实现的客户端的由来"><a class="markdownIt-Anchor" href="#介绍由go实现的客户端的由来"></a> 介绍由go实现的客户端的由来</h4>
+<ul>
+<li>locust 虽然采用协程的方式节省资源并提高并发能力，但语言本身的缺陷使得在并发能力上仍然不是很出色，比如他采用的底层http请求库，或者是优化之后的请求库，都不是很理想，为什么这么说，是因为有go 的存在，所以表现出了差距。你会在locust官方看到一个提升并发能力的选项叫做boomer。 于是基于boomer 我又做了一些组装 改进，更加适用于分布式，更加出色的并发能力。</li>
+</ul>
+<hr />
+<h4 id="go实现的客户端目录"><a class="markdownIt-Anchor" href="#go实现的客户端目录"></a> go实现的客户端目录</h4>
+<ol>
+<li>
+<p>下图为go客户端结构<br />
+<img src="http://cdn.bqius.com/images/jiegoutu.png"></p>
+</li>
+<li>
+<p>查看路劲 <code>/go/src/falcon/slave/cases</code> 是我们需要编辑的目录，<strong>在这里完成业务编写</strong><br />
+比如： xx业务.go yy业务.go, 名称唯一</p>
+</li>
+</ol>
+<hr />
+<h4 id="具体示例"><a class="markdownIt-Anchor" href="#具体示例"></a> 具体示例</h4>
+<ol>
+<li>
+<p>创建好 xx业务.go 文件后，假设现在需要写一个业务，是先登录，然后做别的一些列事情 ：即 <strong>登录</strong> -&gt; <strong>操作A</strong> -&gt; <strong>操作B</strong></p>
+</li>
+<li>
+<p>所以先实现 登录</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *CaseEntry)</span> <span class="title">Login</span><span class="params">()</span> <span class="params">(*LoginRes,error)</span></span> &#123;</span><br><span class="line">	</span><br><span class="line">            accounts:=&lt;-c.canshu</span><br><span class="line">            c.Log.Info(<span class="string">"&lt;-c.canshu"</span>,accounts )</span><br><span class="line">            fmt.Println(<span class="string">"&lt;-c.canshu"</span>,accounts)</span><br><span class="line">            body:=&amp;LoginPostBody&#123;</span><br><span class="line">                <span class="comment">//Account: "jonny.peng@makeblock.com",</span></span><br><span class="line">                Account:accounts,</span><br><span class="line">                Nonce: <span class="string">"XXXX"</span>,</span><br><span class="line">                Password:<span class="string">"XXXX"</span>,</span><br><span class="line">                Ticket:<span class="string">"XXXXX"</span>,</span><br><span class="line">            &#125;   </span><br><span class="line">            sendBody, _ := json.Marshal(body)</span><br><span class="line">	resConf := &amp;boomer_client.HttpRequestConfig&#123;</span><br><span class="line">		Url:         c.Config.Custom.Url,</span><br><span class="line">		Route:       c.Config.Custom.PostRoute,</span><br><span class="line">		ContentType: c.Config.Custom.ContentType,</span><br><span class="line">		Params:      <span class="literal">nil</span>,</span><br><span class="line">		Headers:     <span class="literal">nil</span>,</span><br><span class="line">		Body:        sendBody,</span><br><span class="line">		Request:     <span class="literal">nil</span>,</span><br><span class="line">	&#125;</span><br><span class="line">        <span class="comment">// 发送请求</span></span><br><span class="line">        resp, err := c.http.Post(resConf, <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> j  JsonBody</span><br><span class="line">        <span class="comment">// 解析</span></span><br><span class="line">        _ =json.NewDecoder(strings.NewReader(<span class="keyword">string</span>(resp.Body))).Decode(&amp;j)</span><br><span class="line"></span><br><span class="line">        c.Log.Info(<span class="string">"jsonBody-utoken"</span>,j.Data.Utoken,<span class="string">"sendBody"</span>,<span class="keyword">string</span>( sendBody) )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            c.Log.Error(fmt.Sprintf(<span class="string">"Post %s fail:%s"</span>, c.Config.Custom.PostRoute, err.Error()))</span><br><span class="line">            c.RecordFailure(<span class="string">"POST"</span>, c.Config.Custom.PostRoute, <span class="number">0</span>, err.Error())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断返回码</span></span><br><span class="line">        <span class="keyword">if</span> resp.Code != <span class="number">200</span> &#123;</span><br><span class="line">            c.RecordFailure(<span class="string">"POST"</span>, c.Config.Custom.PostRoute, <span class="keyword">int64</span>(resp.UsedMillTimes), fmt.Sprintf(<span class="string">"Response code: %d"</span>, resp.Code))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span>, errors.New(fmt.Sprintf(<span class="string">"Response code: %d"</span>, resp.Code))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//c.RecordSuccess("POST", c.Config.Custom.PostRoute, int64(resp.UsedMillTimes), resp.Length)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//函数return前自动释放请求</span></span><br><span class="line">        <span class="keyword">defer</span> c.http.FreeHttpResult(resp)</span><br><span class="line"></span><br><span class="line">        c.RecordSuccess(<span class="string">"POST"</span>, c.Config.Custom.PostRoute, <span class="keyword">int64</span>(resp.UsedMillTimes), resp.Length)</span><br><span class="line">        <span class="keyword">return</span> &amp;LoginRes&#123;</span><br><span class="line">            Utoken: j.Data.Utoken,</span><br><span class="line">        &#125;,<span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>代码解释与 node ,python 的思想一样 都是初始化请求参数，发送请求，解析返回值，判断结果。有几处代码需要解释1下:</p>
+<ul>
+<li>
+<p>初始化参数是在 <strong>boomer_client.HttpRequestConfig</strong> 里头，这里面封装了一系列所有需要请求的参数，</p>
+</li>
+<li>
+<p>解码返回值的方式跟go的特性相关，都是需要定义自己需要的结构，方式有N种，详细可以深入去学习</p>
+</li>
+<li>
+<p>请求成功 <strong>c.RecordSuccess</strong>  请求失败 <strong>c.RecordFailure</strong> 分别统计成功的和失败的请求发送到 locsut 的master节点，因为集成了boomer 所以这样写。</p>
+</li>
+<li>
+<p>接受者必须是 <strong>CaseEntry</strong> ,固定写法，因为这里定义了一些通用属性</p>
+</li>
+</ul>
+</li>
+<li>
+<p>实现登录后再实现操作A</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *CaseEntry)</span> 操作<span class="title">A</span> <span class="params">(l *LoginRes)</span></span>&#123;</span><br><span class="line">	utoken :=l.Utoken</span><br><span class="line">	header := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"utoken"</span>:utoken,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	body:=&amp;SignatureParm&#123;</span><br><span class="line">		Signature: <span class="string">"修改参数"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	sendBody, _ := json.Marshal(body)</span><br><span class="line"></span><br><span class="line">	resConf:=&amp;boomer_client.HttpRequestConfig&#123;</span><br><span class="line">		Url: c.Config.Custom.Url,</span><br><span class="line">		Route: c.Config.Custom.PatchRoure,</span><br><span class="line">		ContentType: c.Config.Custom.ContentType,</span><br><span class="line">		Headers: header,</span><br><span class="line">		Body: sendBody,</span><br><span class="line">		Request: <span class="literal">nil</span>,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	 resp,err:=c.http.Patch(resConf,<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> s  SignatureRes</span><br><span class="line">	_ =json.NewDecoder(strings.NewReader(<span class="keyword">string</span>(resp.Body))).Decode(&amp;s)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		c.Log.Error(fmt.Sprintf(<span class="string">"Patch %s fail:%s"</span>, c.Config.Custom.PatchRoure, err.Error()))</span><br><span class="line">		c.RecordFailure(<span class="string">"Patch"</span>, c.Config.Custom.PatchRoure, <span class="number">0</span>, err.Error())</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//函数return前自动释放请求</span></span><br><span class="line">	<span class="keyword">defer</span> c.http.FreeHttpResult(resp)</span><br><span class="line">	c.RecordSuccess(<span class="string">"Patch"</span>, c.Config.Custom.PatchRoure, <span class="keyword">int64</span>(resp.UsedMillTimes), resp.Length)</span><br><span class="line">	c.Log.Info( fmt.Sprintf(<span class="string">"patch-resBody:%d"</span>,<span class="keyword">string</span>(resp.Body)))</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>代码解释:</p>
+<ul>
+<li>
+<p>也是一个标准请求流程，需要注意的是 接受者 也是 <strong>CaseEntry</strong> 固定写法。</p>
+</li>
+<li>
+<p>接收的参数 是上一个操作的返回值，通过一个 <strong>LoginRes</strong> 结构体先存储，再传递到操作A 这个函数，达到参数传递的作用</p>
+</li>
+<li>
+<p>至此就完成了 两个操作的 链接，一个完整的业务模拟。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>组装业务:</p>
+<ul>
+<li>上面实现了2个操作，但是需要包装在一起被调用，所以需要将多个业务 在当前页面 组装在一个函数内 例如这样:</li>
+</ul>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 登录后查询</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *CaseEntry)</span>组装业务<span class="params">()</span></span>&#123;</span><br><span class="line">	LoginRes,err:=c.登录()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	c.操作A(LoginRes)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="comment">//c.Log.Info("登录成功后查询",LoginRes)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>配置文件:</p>
+<ul>
+<li>
+<p>完成好业务代码，接下来就需要配置好配置文件，找到路劲为：<code>/go/src/falcon/slave/conf/main.yml</code></p>
+</li>
+<li>
+<p>配置参数说明 ，这里的参数是与 <code>/go/src/falcon/slave/config/config.go</code> 定义的 K 对应的</p>
+</li>
+</ul>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">custom:</span></span><br><span class="line"><span class="attr">url:</span>  <span class="string">你测试的服务地址</span></span><br><span class="line"><span class="attr">get_route:</span>   <span class="string">地址后面的部分</span> <span class="string">你的请求部分</span>  <span class="string">" /XXX/XXX"</span><span class="string">，</span></span><br><span class="line"><span class="attr">post_route:</span> <span class="string">地址后面的部分</span> <span class="string">你的请求部分</span>   <span class="string">"/v1/login"</span></span><br><span class="line"><span class="attr">patch_route:</span> <span class="string">"/v1/user/signature"</span></span><br><span class="line"><span class="attr">content_type:</span> <span class="string">"application/json"</span>   </span><br><span class="line"><span class="attr">http_proxy:</span> <span class="string">"127.0.0.1:8080"</span>    <span class="string">//</span> <span class="string">代理地址</span> <span class="string">如果有的话</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置好上面的的基础信息，再配置 case执行的部分</li>
+</ul>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">case:</span></span><br><span class="line">    <span class="bullet">-</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">"go"</span>             <span class="string">//</span> <span class="string">go版本</span> <span class="string">固定就写go</span></span><br><span class="line">    <span class="attr">fn:</span> <span class="string">"cases.组装业务"</span>    <span class="string">//</span> <span class="string">这里表示</span> <span class="string">cases包下面的</span> <span class="string">组装业务</span> <span class="string">函数，对应上面的例子</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">"组装业务"</span>    <span class="string">//函数名称</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>    <span class="string">//</span> <span class="string">启用</span>    <span class="string">优先读取该配置，如果不执行设置false</span></span><br><span class="line">    <span class="attr">weight:</span> <span class="number">1</span>      <span class="string">//</span> <span class="string">权重</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面说了配置是一个文件定义的，所以如果你的需要读取的配置参数较多就需要在这里新增，路劲 和 配置如下:<code>/go/src/falcon/slave/config/config.go</code></li>
+</ul>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Custom <span class="keyword">struct</span> &#123;</span><br><span class="line">	Url  			<span class="keyword">string</span>  <span class="string">`yaml:"url"`</span></span><br><span class="line">	GetRoute  		<span class="keyword">string</span>  <span class="string">`yaml:"get_route"`</span></span><br><span class="line">	PostRoute  		<span class="keyword">string</span>  <span class="string">`yaml:"post_route"`</span></span><br><span class="line">	ContentType  	<span class="keyword">string</span>  <span class="string">`yaml:"content_type"`</span></span><br><span class="line">	HttpProxy  		<span class="keyword">string</span>  <span class="string">`yaml:"http_proxy"`</span></span><br><span class="line">	PatchRoure  	<span class="keyword">string</span>  <span class="string">`yaml:"patch_route"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>比如 PatchRoure 属性 就是新增的一个patch 请求 如果一个请求配置了多个地址，就需要改数据类型为数组， 相应的main.yml 也要改成 yml 数组的形式配置</li>
+</ul>
+</li>
+<li>
+<p>运行:</p>
+<ul>
+<li>
+<p>此时需要启动你的服务器，这里服务有2个，一个是locust 的master，所以你切换到 <code>/python/bin/</code>, 运行 <code>./master_start.sh</code>，根据你的操作系统来运行对应后缀的文件，win的对应 ./master_start.bat</p>
+</li>
+<li>
+<p>然后启动 slave，也就是你编写的go 版本文件，切换到 <code>/go/src/falcon/slave/bin</code> 运行 <code>./start.sh -local</code> 执行文件后缀同上，如果你要执行当前你的go -slave配置文件内的配置 就必须加上 <code>-local</code> 否则是读取的 locust  master 上的配置</p>
+</li>
+<li>
+<p>再到  locust master 上的 8888 站点 去输入user 就可以跑起来了。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>调试:</p>
+<ul>
+<li>
+<p>方式1 : 如果你习惯于用内置的 log 方式调试，那只需要在代码内用log，例如上述代码内 <code>c.Log.Info</code>，启动方式还是采用 第8点运行，在 web站点用户信息内查看日志</p>
+</li>
+<li>
+<p>方式2 : 如果你需要频繁打印信息， 采用fmt 的方式，就得如下做：</p>
+</li>
+</ul>
+<p><strong>设置 go 执行环境</strong></p>
+ <img src="http://cdn.bqius.com/images/p2.png">
+<p><strong>设置 go build</strong></p>
+ <img src="http://cdn.bqius.com/images/p1.png">
+<ul>
+<li>配置完毕，值需要点击开始运行，就能在控制台看到打印的信息。 推荐方式2 一次配置永久使用。不用频繁启停服务</li>
+</ul>
+</li>
+<li>
+<p>测试服务器:</p>
+<ul>
+<li>
+<p>如果有同学先试试感觉， 可以直接访问本地部署的5555 服务，对应的文件是 <code>cases.CustomDemo</code></p>
+</li>
+<li>
+<p>最好是不要自己本地部署 5555 然后压测自己，机器扛不住的，最好是自己独立部署一台5555的服务，文件路劲在<code>server/bin</code> 直接启动，启动方式与上面描述的启动相同</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h4 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h4>
+<ol>
+<li>
+<p>上述操作是一套基本使用流程，可能还存在一些细节未来得及想到</p>
+</li>
+<li>
+<p>不断补充使用细节，及时更新</p>
+</li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://bugfixs.com/2019/05/18/locust-go-slave/" title="压力客户端go版本框架" target="_blank" rel="external">https://bugfixs.com/2019/05/18/locust-go-slave/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/Super-Ps" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/dijia.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/Super-Ps" target="_blank"><span class="text-dark">奥利给</span><small class="ml-1x">Js &amp; Go &amp; Py &amp; Tester</small></a></h3>
+        <div>bugfix迪迦</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/05/20/hexo-yuming-md/" title="hexo绑定域名"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/05/20/node-f3-go/" title="node-f3.go"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Super-Ps" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/Super-ps" target="_blank"> Super-ps </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '4707df43cc4432187761',
+    clientSecret: '5ed1f38969ce9241da26f006bd520392c64b8db9',
+    repo: 'HexoComments',
+    owner: 'Super-Ps',
+    admin: ['Super-Ps'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
