@@ -26,7 +26,7 @@
 <meta property="og:description" content="安装  创建一个项目目录  1cd &#x2F;your&#x2F;project&#x2F;path  进入到上面路劲，执行 npm init -y ,再执行  12345678npm install cypress --save-dev&#96;&#96;&#96; #### 启动- Node的正常启动-完整路劲启动&#96;&#96;&#96; bash.&#x2F;node_modules&#x2F;.bin&amp;#x2">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-21T13:05:48.000Z">
-<meta property="article:modified_time" content="2020-05-22T15:35:19.930Z">
+<meta property="article:modified_time" content="2020-05-23T06:40:23.832Z">
 <meta property="article:author" content="Super-Jonny">
 <meta property="article:tag" content="Cypress">
 <meta name="twitter:card" content="summary">
@@ -374,7 +374,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">Catalogue</h3>
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#安装"><span class="toc-number">1.</span> <span class="toc-text"> 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">2.</span> <span class="toc-text"> </span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#安装"><span class="toc-number">1.</span> <span class="toc-text"> 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#integration自定义case目录casejs"><span class="toc-number">2.</span> <span class="toc-text"> integration&#x2F;自定义case目录&#x2F;case.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#请求登录代替元素定位"><span class="toc-number">3.</span> <span class="toc-text"> 请求登录代替元素定位</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -425,7 +425,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/21/Cypress/#comments" class="article-comment-link">Comments</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 76(words)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 231(words)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 1(minutes)</span>
@@ -448,7 +448,10 @@
 <li>用过npx的都知道他的强大</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx cypress open</span><br></pre></td></tr></table></figure>
-<h4 id=""><a class="markdownIt-Anchor" href="#"></a> </h4>
+<h4 id="integration自定义case目录casejs"><a class="markdownIt-Anchor" href="#integration自定义case目录casejs"></a> integration/自定义case目录/case.js</h4>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">describe (<span class="string">'登录'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// this.be(()=&gt;&#123;</span></span><br><span class="line">    <span class="comment">//     cy.visit('http://test-web.makeblock.com/edu/index.html')</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#125;)</span></span><br><span class="line">    before(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        cy.visit(<span class="string">'http://XXXXX'</span>)</span><br><span class="line">        cy.log(<span class="string">'这个测试集用例只执行一次，测试准备工作'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">'点击'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        </span><br><span class="line">        cy.get(<span class="string">'.ant-btn'</span>)</span><br><span class="line">        .click()  </span><br><span class="line">        cy.wait(<span class="number">5000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">'跳转到登录页面'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        </span><br><span class="line">        cy.url()</span><br><span class="line">        .should(<span class="string">'include'</span>,<span class="string">'https://xxxxxlogin'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    it(<span class="string">'输入邮箱'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        cy.get(<span class="string">'#account'</span>)</span><br><span class="line">        .type(<span class="string">'steamedu.list@makeblock.com'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">'输入密码'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        cy.get(<span class="string">'#password'</span>)</span><br><span class="line">        .type(<span class="string">'123456'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    it(<span class="string">'输入密码'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">        cy.contains(<span class="string">' 登 录 '</span>)</span><br><span class="line">        .click()</span><br><span class="line">    &#125;)</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//Can't run because you've entered an invalid browser name.</span></span><br><span class="line">    </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="请求登录代替元素定位"><a class="markdownIt-Anchor" href="#请求登录代替元素定位"></a> 请求登录代替元素定位</h4>
+<p>待实现</p>
 
       
     </div>
