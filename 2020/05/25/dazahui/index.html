@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>随便测试一下 | bugfix</title>
+  <meta name="description" content="单元测试维度  维度确定 1.数据处理 ： 值做数据处理这一层，抽出来放在一个包下面用于测试，主要测试 通过路由进来的数据，对应的数据处理函数  数据库数据换换成接送格式的   处理方式 1.方式 边界，等价类 2.遇到的问题： 输入为空的 参数，不执行错误 4. 依赖的第三方库，是直接按照长度来判断的，空视为0长度所以不报错 5. 测试桩，mock的使用分别在与方法和服务  go覆盖率时间 j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随便测试一下">
+<meta property="og:url" content="https://bugfixs.com/2020/05/25/dazahui/index.html">
+<meta property="og:site_name" content="bugfix">
+<meta property="og:description" content="单元测试维度  维度确定 1.数据处理 ： 值做数据处理这一层，抽出来放在一个包下面用于测试，主要测试 通过路由进来的数据，对应的数据处理函数  数据库数据换换成接送格式的   处理方式 1.方式 边界，等价类 2.遇到的问题： 输入为空的 参数，不执行错误 4. 依赖的第三方库，是直接按照长度来判断的，空视为0长度所以不报错 5. 测试桩，mock的使用分别在与方法和服务  go覆盖率时间 j">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-25T08:38:10.000Z">
+<meta property="article:modified_time" content="2020-05-26T06:55:11.974Z">
+<meta property="article:author" content="Super-Jonny">
+<meta property="article:tag" content="zoom">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://bugfixs.com/2020/05/25/dazahui/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="bugfix" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/Super-Ps" target="_blank">
+          <img class="img-circle img-rotate" src="/images/dijia.png" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">奥利给</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Js &amp; Go &amp; Py &amp; Tester</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Super-Ps" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好记性不如烂笔头</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Go/">Go</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node/">Node</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B1%82%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">分层自动化测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%8F%E8%AE%AE/">协议</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AE%97%E6%B3%95/">数据结构算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/">测试开发</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cypress/" rel="tag">Cypress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dockerfile/" rel="tag">Dockerfile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Image/" rel="tag">Image</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/locust-go-slave/" rel="tag">locust-go-slave</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zoom/" rel="tag">zoom</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/" rel="tag">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E5%9E%8B/" rel="tag">原型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/" rel="tag">原型链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag">多进程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E/" rel="tag">异步非阻塞</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E5%AF%BC%E5%BC%8F/" rel="tag">推导式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E8%A3%85%E5%B5%8C%E5%A5%97/" rel="tag">组装嵌套</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA/" rel="tag">缓冲区</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Cypress/" style="font-size: 13px;">Cypress</a> <a href="/tags/Dockerfile/" style="font-size: 13px;">Dockerfile</a> <a href="/tags/Image/" style="font-size: 13px;">Image</a> <a href="/tags/hexo/" style="font-size: 13.5px;">hexo</a> <a href="/tags/locust-go-slave/" style="font-size: 13px;">locust-go-slave</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/zoom/" style="font-size: 13px;">zoom</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/" style="font-size: 13px;">事件循环</a> <a href="/tags/%E5%8E%9F%E5%9E%8B/" style="font-size: 13px;">原型</a> <a href="/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/" style="font-size: 13px;">原型链</a> <a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" style="font-size: 13px;">双指针</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 13px;">多进程</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 13px;">并发</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 13px;">异步非阻塞</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 13px;">接口</a> <a href="/tags/%E6%8E%A8%E5%AF%BC%E5%BC%8F/" style="font-size: 13px;">推导式</a> <a href="/tags/%E7%90%86%E8%AE%BA/" style="font-size: 14px;">理论</a> <a href="/tags/%E7%BB%84%E8%A3%85%E5%B5%8C%E5%A5%97/" style="font-size: 13px;">组装嵌套</a> <a href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA/" style="font-size: 13px;">缓冲区</a> <a href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" style="font-size: 13px;">装饰器</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 13px;">面向对象</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled ">
+        
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/25/dazahui/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/">测试开发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/25/dazahui/" class="title">随便测试一下</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-25T08:38:10.000Z" itemprop="datePublished">2020-05-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/22/websocket/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%8D%8F%E8%AE%AE/">协议</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/22/websocket/" class="title">websocket-go</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-22T14:41:51.000Z" itemprop="datePublished">2020-05-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/21/Cypress/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%88%86%E5%B1%82%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">分层自动化测试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/Cypress/" class="title">Cypress安装与启动</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T13:05:48.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/21/%E5%AE%B9%E5%99%A8-1/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/%E5%AE%B9%E5%99%A8-1/" class="title">Docker-locsut</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T12:31:32.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2020/05/21/%E5%AE%B9%E5%99%A8/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/%E5%AE%B9%E5%99%A8/" class="title">Docker-XXX</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T12:20:45.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#单元测试维度"><span class="toc-number">1.</span> <span class="toc-text"> 单元测试维度</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#维度确定"><span class="toc-number">1.1.</span> <span class="toc-text"> 维度确定</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#处理方式"><span class="toc-number">1.2.</span> <span class="toc-text"> 处理方式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#go覆盖率时间"><span class="toc-number">2.</span> <span class="toc-text"> go覆盖率时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#前端"><span class="toc-number">3.</span> <span class="toc-text"> 前端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#算法"><span class="toc-number">4.</span> <span class="toc-text"> 算法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#排序"><span class="toc-number">5.</span> <span class="toc-text"> 排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#测试类"><span class="toc-number">6.</span> <span class="toc-text"> 测试类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据库"><span class="toc-number">7.</span> <span class="toc-text"> 数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#协议"><span class="toc-number">8.</span> <span class="toc-text"> 协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#移动端appium的问题"><span class="toc-number">9.</span> <span class="toc-text"> 移动端appium的问题</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-dazahui" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      随便测试一下
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/25/dazahui/" class="article-date">
+	  <time datetime="2020-05-25T08:38:10.000Z" itemprop="datePublished">2020-05-25</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/">测试开发</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/zoom/" rel="tag">zoom</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/25/dazahui/#comments" class="article-comment-link">Comments</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.8k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 8(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="单元测试维度"><a class="markdownIt-Anchor" href="#单元测试维度"></a> 单元测试维度</h4>
+<h5 id="维度确定"><a class="markdownIt-Anchor" href="#维度确定"></a> 维度确定</h5>
+<p>1.数据处理 ： 值做数据处理这一层，抽出来放在一个包下面用于测试，主要测试 通过路由进来的数据，对应的数据处理函数</p>
+<ol start="2">
+<li>数据库数据换换成接送格式的</li>
+</ol>
+<h5 id="处理方式"><a class="markdownIt-Anchor" href="#处理方式"></a> 处理方式</h5>
+<p>1.方式 边界，等价类</p>
+<p>2.遇到的问题： 输入为空的 参数，不执行错误<br />
+4. 依赖的第三方库，是直接按照长度来判断的，空视为0长度所以不报错<br />
+5. 测试桩，mock的使用分别在与方法和服务</p>
+<h4 id="go覆盖率时间"><a class="markdownIt-Anchor" href="#go覆盖率时间"></a> go覆盖率时间</h4>
+<p>jenksfile 配置sona go的配置方式<br />
+在打包之前 执行完单元测试<br />
+得到一个覆盖率的结果文件<br />
+然后文件发送给SONA 可以查看详细情况请</p>
+<h4 id="前端"><a class="markdownIt-Anchor" href="#前端"></a> 前端</h4>
+<p>前端：通用的CSS库，CSS控制元素、js如何与后台进行连接、有没有用过JQuery</p>
+<h4 id="算法"><a class="markdownIt-Anchor" href="#算法"></a> 算法：</h4>
+<ol>
+<li>英文句子 单词逆序输出，考虑优化算法</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str=<span class="string">"你好世界!!!!"</span>;　</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">str_reverse2</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(a.length&gt;<span class="number">0</span>)&#123;<span class="comment">//判断传入的参数是否为空；</span></span><br><span class="line">        <span class="keyword">var</span> str_arry=str.split(<span class="string">""</span>);<span class="comment">//把字符串切割数组</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"str_arry"</span>,str_arry <span class="comment">//  [ '你', '好', '世', '界', '!', '!', '!', '!' ]</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=str.length<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;<span class="comment">//利用for循环从后往前输出数组；达到想要的效果</span></span><br><span class="line">            <span class="built_in">console</span>.log(str_arry[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>找一个字符串的驼峰字符。比如“asdbxbsadcsd”,其中的“bxb”就是面试官定义的驼峰，两边字母相同中间不同，要求的输出是一个没有驼峰的字符串。</li>
+</ol>
+<!-- 问了一些排序算法和链表的问题，编程主要写了一个关于回文的 -->
+<ol start="2">
+<li>回文字符串，最长回文字符串</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPalindrome</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> str !== <span class="string">'string'</span> || str.constructor !== <span class="built_in">String</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> len = <span class="built_in">parseInt</span>((str.length+<span class="number">1</span>)/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">	<span class="keyword">if</span> (str[i] !== str[str.length-i<span class="number">-1</span>]) &#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>
+<p>写代码：1-n面值的硬币，每个有无数个，凑成m元最少需要几个。</p>
+</li>
+<li>
+<p>最大公共子序列</p>
+</li>
+<li>
+<p>给你两个链表判断是否相交？返回交点？（LeetCode 160）时间复杂度？</p>
+</li>
+<li>
+<p>给一个数字123返回数字321？（LeetCode 7）时间复杂度？</p>
+</li>
+<li>
+<p>排序数组去重（LeetCode 26）时间复杂度？</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">let</span> removeDuplicates = <span class="function"><span class="keyword">function</span> (<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> cur = nums[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; nums.length;) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] === cur)  <span class="comment">// 循环到的元素与当前元素相等</span></span><br><span class="line">            nums.splice(i, <span class="number">1</span>);  <span class="comment">// 就删除 </span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            cur = nums[i++];  <span class="comment">// 否则就移动当前元素的位置 +1</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"nums-js"</span>,nums)</span><br><span class="line">	<span class="keyword">return</span> nums.length</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li>两个有序数组的中位数；</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">var</span> findMedianSortedArrays = <span class="function"><span class="keyword">function</span>(<span class="params">nums1, nums2</span>) </span>&#123;    </span><br><span class="line">        <span class="keyword">let</span> num1 = [...nums1, ...nums2];</span><br><span class="line">        <span class="keyword">let</span> num = num1.sort(<span class="function">(<span class="params">a,b</span>) =&gt;</span> &#123;<span class="keyword">return</span> a-b;&#125;);</span><br><span class="line">        <span class="keyword">let</span> m = <span class="built_in">parseInt</span>((num.length) / <span class="number">2</span>);    </span><br><span class="line">        <span class="keyword">let</span> l =num.length;</span><br><span class="line">        <span class="keyword">if</span> (l % <span class="number">2</span> == <span class="number">0</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (num[m] + num[m<span class="number">-1</span>])/<span class="number">2</span>;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> num[m];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( findMedianSortedArrays([<span class="number">1</span>,<span class="number">3</span>,],[<span class="number">2</span>,<span class="number">4</span>,]))</span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li>合并有序数组</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">nums1, m, nums2, n</span>) </span>&#123;   </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = m; i &lt; m + n; i++)</span><br><span class="line"></span><br><span class="line">        nums1[i] = nums2[i - m];</span><br><span class="line"></span><br><span class="line">        nums1.sort(<span class="function">(<span class="params">a, b</span>)=&gt;</span>&#123;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> a - b;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'merge'</span>,nums1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">merge([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],<span class="number">3</span>,[<span class="number">4</span>,<span class="number">3</span>,<span class="number">4</span>],<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<ol start="10">
+<li>数组去掉重复数字，怎么做？如果不能用set呢？（啊，那就排序遍历？）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">subNo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="comment">//创建一个数组</span></span><br><span class="line">			<span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">5</span>];</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//去除数组中重复的数字</span></span><br><span class="line">			<span class="comment">//获取数组中的每一个元素</span></span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span> ; i&lt;arr.length ; i++)&#123;</span><br><span class="line">				<span class="comment">//console.log(arr[i]);</span></span><br><span class="line">				<span class="comment">/*获取当前元素后的所有元素*/</span></span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">let</span> j=i+<span class="number">1</span> ; j&lt;arr.length ; j++)&#123;</span><br><span class="line">					<span class="comment">//console.log("----&gt;"+arr[j]);</span></span><br><span class="line">					<span class="comment">//判断两个元素的值是否相等</span></span><br><span class="line">					<span class="keyword">if</span>(arr[i] == arr[j])&#123;</span><br><span class="line">						<span class="comment">//如果相等则证明出现了重复的元素，则删除j对应的元素</span></span><br><span class="line">						arr.splice(j,<span class="number">1</span>);</span><br><span class="line">						<span class="comment">//当删除了当前j所在的元素以后，后边的元素会自动补位</span></span><br><span class="line">						<span class="comment">//此时将不会在比较这个元素吧，我需要在比较一次j所在位置的元素</span></span><br><span class="line">						<span class="comment">//使j自减</span></span><br><span class="line">						j--;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;</span><br><span class="line">subNo()</span><br></pre></td></tr></table></figure>
+<ol start="11">
+<li>
+<p>找一堆出现偶数次数的数组中唯一出现奇数次数的数</p>
+</li>
+<li>
+<p>单向循环链表中删除一个节点</p>
+</li>
+<li>
+<p>链表反转</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reverseList = <span class="function"><span class="keyword">function</span> (<span class="params">head</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> prev = <span class="literal">null</span>       <span class="comment">// 尾随cur的prev指针，开始时指向null</span></span><br><span class="line">  <span class="keyword">let</span> cur = head        <span class="comment">// 推进指针，开始时指向头结点</span></span><br><span class="line">  <span class="keyword">while</span> (cur) &#123;         <span class="comment">// cur指针推进到null节点，则退出循环</span></span><br><span class="line">    <span class="keyword">let</span> next = cur.next <span class="comment">// 暂存cur的下一节点</span></span><br><span class="line">    cur.next = prev     <span class="comment">// 将cur的next指针指向prev</span></span><br><span class="line">    prev = cur          <span class="comment">// 将prev更新为cur节点</span></span><br><span class="line">    cur = next          <span class="comment">// 将cur指针推进一个节点</span></span><br><span class="line">  &#125;                     <span class="comment">// 退出while时，cur指向null，prev指向原链的尾节点</span></span><br><span class="line">  <span class="keyword">return</span> prev</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="18">
+<li>找出数组内第二大的</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[<span class="number">5</span>,<span class="number">2</span>,<span class="number">10</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">9</span>,<span class="number">1</span>];  <span class="comment">//解法1： 循环遍历不同的位置的元素，并对比， 得出大小顺序，通过临时变量交换排序</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">array2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> temp,min;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;arr.length<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'arr'</span>,arr[i],arr.length<span class="number">-1</span>)</span><br><span class="line">        min=i;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> j=i+<span class="number">1</span>;j&lt;arr.length;j++)&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'j'</span>,j,arr.length)</span><br><span class="line">            <span class="keyword">if</span>(arr[j]&gt;arr[i])&#123;  </span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'arr[j]'</span>,arr[j],<span class="string">'||'</span>,<span class="string">'arr[i]'</span>,arr[i])</span><br><span class="line">                temp= arr[i];</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'temp'</span>,temp)</span><br><span class="line">                arr[i] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>19 数组扁平，去重，排序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newArray</span> (<span class="params"> </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(arr.some(<span class="built_in">Array</span>.isArray))&#123;</span><br><span class="line">    arr = [].concat(...arr)</span><br><span class="line">  &#125;</span><br><span class="line">  arr = [...new <span class="built_in">Set</span>(arr)].sort(<span class="function">(<span class="params">a,b</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-b</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="20">
+<li>二分搜索</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> search = <span class="function"><span class="keyword">function</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> right = nums.length<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">let</span> mid;</span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">        mid = <span class="built_in">parseInt</span>((left+right)/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">const</span> midVal = nums[mid];</span><br><span class="line">        <span class="keyword">if</span>(midVal === target) <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">if</span>(midVal &gt; target)  right--;</span><br><span class="line">        <span class="keyword">if</span>(midVal &lt; target)  left++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a =search([<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">41</span>,<span class="number">221</span>],<span class="number">10</span>)</span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br></pre></td></tr></table></figure>
+<h4 id="排序"><a class="markdownIt-Anchor" href="#排序"></a> 排序</h4>
+<ol>
+<li>冒泡</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; len - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &gt; arr[j+<span class="number">1</span>]) &#123;        <span class="comment">//相邻元素两两对比</span></span><br><span class="line">                <span class="keyword">var</span> temp = arr[j+<span class="number">1</span>];        <span class="comment">//元素交换</span></span><br><span class="line">                arr[j+<span class="number">1</span>] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a =bubbleSort([<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">41</span>,<span class="number">221</span>])</span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>选择排序</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">selectionSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">var</span> minIndex, temp;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        minIndex = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; len; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIndex]) &#123;     <span class="comment">//寻找最小的数</span></span><br><span class="line">                minIndex = j;                 <span class="comment">//将最小数的索引保存</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        temp = arr[i];</span><br><span class="line">        arr[i] = arr[minIndex];</span><br><span class="line">        arr[minIndex] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a =selectionSort([<span class="number">44</span>,<span class="number">66</span>,<span class="number">22</span>,<span class="number">66</span>,<span class="number">88</span>,<span class="number">65</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6789</span>,<span class="number">90</span>])</span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br></pre></td></tr></table></figure>
+<h4 id="测试类"><a class="markdownIt-Anchor" href="#测试类"></a> 测试类</h4>
+<p>测试微信发朋友圈<br />
+对qa这个岗位的理解</p>
+<p>聊聊浏览器输入URL之后发生了什么事？</p>
+<h4 id="数据库"><a class="markdownIt-Anchor" href="#数据库"></a> 数据库</h4>
+<p>数据库acid、死锁及解决<br />
+数据库：范式、数据库存储过程、慢查询、数据库索引、数据库引擎</p>
+<p>mysql里乐观锁和悲观锁的区别。</p>
+<h4 id="协议"><a class="markdownIt-Anchor" href="#协议"></a> 协议</h4>
+<p>11.常见响应码，403是什么，什么情况会报403</p>
+<p>tcp和udp的区别</p>
+<h4 id="移动端appium的问题"><a class="markdownIt-Anchor" href="#移动端appium的问题"></a> 移动端appium的问题</h4>
+<ol>
+<li>因为底层是框架是 flutter  导致安卓的代码正常（元素定位），ios的不行 （抓不到元素）</li>
+</ol>
+<ul>
+<li>解决办法  暂无</li>
+</ul>
+<ol start="2">
+<li>元素定位遇到异常</li>
+</ol>
+<ul>
+<li>保持干净的测试环境</li>
+</ul>
+<ol start="3">
+<li>
+<p>开发组件元素属性 不写id  写class =‘a b c ’ name</p>
+</li>
+<li>
+<p>元素偶尔定位不到， 不稳定，</p>
+</li>
+</ol>
+<ul>
+<li>增加等待时间</li>
+</ul>
+<ol start="5">
+<li>
+<p>兼容 版本</p>
+</li>
+<li>
+<p>性能关注点：</p>
+</li>
+</ol>
+<ul>
+<li>app 白屏 闪退 卡顿</li>
+<li>内存泄漏的sdk，暴露问题:  </li>
+<li>压力测试 （2款）</li>
+<li></li>
+</ul>
+<ol start="7">
+<li>功能：</li>
+</ol>
+<ul>
+<li>兼容 低系统的问题多</li>
+<li>偶现问题</li>
+<li>打包不规范 （xcode更新了，在最新的系统上13.X 安装就闪退 ）</li>
+<li></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://bugfixs.com/2020/05/25/dazahui/" title="随便测试一下" target="_blank" rel="external">https://bugfixs.com/2020/05/25/dazahui/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/Super-Ps" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/dijia.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/Super-Ps" target="_blank"><span class="text-dark">奥利给</span><small class="ml-1x">Js &amp; Go &amp; Py &amp; Tester</small></a></h3>
+        <div>bugfix迪迦</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/05/22/websocket/" title="websocket-go"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Super-Ps" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/Super-ps" target="_blank"> Super-ps </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '4707df43cc4432187761',
+    clientSecret: '5ed1f38969ce9241da26f006bd520392c64b8db9',
+    repo: 'HexoComments',
+    owner: 'Super-Ps',
+    admin: ['Super-Ps'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

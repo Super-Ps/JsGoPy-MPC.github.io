@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://bugfixs.com/"/>
-  <updated>2020-05-22T15:58:54.573Z</updated>
+  <updated>2020-05-26T06:55:11.974Z</updated>
   <id>https://bugfixs.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>随便测试一下</title>
+    <link href="https://bugfixs.com/2020/05/25/dazahui/"/>
+    <id>https://bugfixs.com/2020/05/25/dazahui/</id>
+    <published>2020-05-25T08:38:10.000Z</published>
+    <updated>2020-05-26T06:55:11.974Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;单元测试维度&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#单元测试维度&quot;&gt;&lt;/a&gt; 单元测试维度&lt;/h4&gt;
+&lt;h5 id=&quot;维度确定&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#维度确定&quot;&gt;&lt;/a&gt; 维度
+      
+    
+    </summary>
+    
+    
+      <category term="测试开发" scheme="https://bugfixs.com/categories/%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="zoom" scheme="https://bugfixs.com/tags/zoom/"/>
+    
+  </entry>
   
   <entry>
     <title>websocket-go</title>
@@ -47,17 +72,18 @@
     <link href="https://bugfixs.com/2020/05/21/Cypress/"/>
     <id>https://bugfixs.com/2020/05/21/Cypress/</id>
     <published>2020-05-21T13:05:48.000Z</published>
-    <updated>2020-05-23T06:46:05.472Z</updated>
+    <updated>2020-05-26T04:47:58.688Z</updated>
     
     <summary type="html">
     
       
       
-        &lt;h4 id=&quot;安装&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#安装&quot;&gt;&lt;/a&gt; 安装&lt;/h4&gt;
+        &lt;p&gt;·····&lt;/p&gt;
+&lt;h4 id=&quot;安装&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#安装&quot;&gt;&lt;/a&gt; 安装&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;创建一个项目目录&lt;/li&gt;
 &lt;/ul&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td 
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;t
       
     
     </summary>
@@ -434,25 +460,6 @@
     
     
       <category term="原型链" scheme="https://bugfixs.com/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JavaScript-f3</title>
-    <link href="https://bugfixs.com/2017/05/20/JavaScript-f3/"/>
-    <id>https://bugfixs.com/2017/05/20/JavaScript-f3/</id>
-    <published>2017-05-20T12:09:40.000Z</published>
-    <updated>2020-05-22T15:35:19.931Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-      <category term="JavaScript" scheme="https://bugfixs.com/categories/JavaScript/"/>
-    
-    
-      <category term="事件循环" scheme="https://bugfixs.com/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/"/>
     
   </entry>
   
