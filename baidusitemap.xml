@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bugfixs.com/2020/06/06/go-1/</loc>
+    <lastmod>2020-06-06</lastmod>
+  </url>  <url>
+    <loc>https://bugfixs.com/2020/06/06/go-2/</loc>
+    <lastmod>2020-06-06</lastmod>
+  </url>  <url>
+    <loc>https://bugfixs.com/2020/06/06/go/</loc>
+    <lastmod>2020-06-06</lastmod>
+  </url>  <url>
+    <loc>https://bugfixs.com/2020/05/16/Dsr-1/</loc>
+    <lastmod>2020-06-06</lastmod>
+  </url>  <url>
+    <loc>https://bugfixs.com/2020/05/16/Dsr/</loc>
+    <lastmod>2020-06-05</lastmod>
+  </url>  <url>
     <loc>https://bugfixs.com/2020/05/25/dazahui/</loc>
-    <lastmod>2020-05-26</lastmod>
+    <lastmod>2020-05-27</lastmod>
   </url>  <url>
     <loc>https://bugfixs.com/2020/05/21/Cypress/</loc>
     <lastmod>2020-05-26</lastmod>
@@ -22,13 +37,10 @@
     <loc>https://bugfixs.com/2018/05/20/node-f1-go/</loc>
     <lastmod>2020-05-22</lastmod>
   </url>  <url>
-    <loc>https://bugfixs.com/2018/05/20/node-f2-go/</loc>
-    <lastmod>2020-05-22</lastmod>
-  </url>  <url>
     <loc>https://bugfixs.com/2018/05/20/node-f3-go/</loc>
     <lastmod>2020-05-22</lastmod>
   </url>  <url>
-    <loc>https://bugfixs.com/2020/05/16/shujujiegou/</loc>
+    <loc>https://bugfixs.com/2018/05/20/node-f2-go/</loc>
     <lastmod>2020-05-22</lastmod>
   </url>  <url>
     <loc>https://bugfixs.com/2020/05/20/test-1/</loc>
@@ -37,19 +49,10 @@
     <loc>https://bugfixs.com/2020/05/20/test-2/</loc>
     <lastmod>2020-05-22</lastmod>
   </url>  <url>
-    <loc>https://bugfixs.com/2020/05/20/go-f1/</loc>
-    <lastmod>2020-05-22</lastmod>
-  </url>  <url>
-    <loc>https://bugfixs.com/2020/05/20/go-f2/</loc>
-    <lastmod>2020-05-22</lastmod>
-  </url>  <url>
-    <loc>https://bugfixs.com/2020/05/20/go-f3/</loc>
+    <loc>https://bugfixs.com/2019/05/20/hexo-yuming-md/</loc>
     <lastmod>2020-05-22</lastmod>
   </url>  <url>
     <loc>https://bugfixs.com/2017/11/20/hexo-pure-opt-md/</loc>
-    <lastmod>2020-05-22</lastmod>
-  </url>  <url>
-    <loc>https://bugfixs.com/2019/05/20/hexo-yuming-md/</loc>
     <lastmod>2020-05-22</lastmod>
   </url>  <url>
     <loc>https://bugfixs.com/2019/05/18/locust-go-slave/</loc>
